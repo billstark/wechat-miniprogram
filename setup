@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Exit on failures.
+set -e
+
+set -o pipefail
+
+cp ./deploy/dbConfig.sample.json ./dbConfig.json
+cp ./deploy/dbConfig.sample.json ./testDBConfig.json
+cp ./deploy/serverConfig.sample.json ./serverConfig.json

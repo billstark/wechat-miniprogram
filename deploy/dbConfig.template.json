@@ -1,0 +1,10 @@
+{
+  "driver": "<db_driver>",
+  "host": "<db_host>",
+  "port": "<db_port>",
+  "username": "<db_username>",
+  "password": "<db_password>",
+  "databaseName": "<db_name>",
+  "maxOpenConnections": "<max_open_connections>",
+  "maxIdleConnections": "<max_idle_connections>"
+}

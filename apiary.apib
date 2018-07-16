@@ -1,0 +1,373 @@
+FORMAT: 1A
+HOST: http://wechat-wechat-miniprogram.com/
+
+# wechat-miniprogram API
+
+This is a simple API endpoint for a wechat miniprogram named wechat-miniprogram. 
+It supports basic queries for accounting.
+
+## User Profile [/summary/user/{host_id}]
+
+### Gets one user [GET]
+
+This will list down all finacially related users to a specific user
+and will show the amount of money owe/lent.
+
++ Parameters
+    + host_id (string, required) - the wechat openid of a specific user.
+
++ Response 200 (application/json)
+
+        {        
+            "user": "45324b",
+            "related_people": [
+                {
+                    "w_id": "12345a",
+                    "amount": 3423
+                },
+                {
+                    "w_id": "31451k",
+                    "amount": 542
+                }
+            ]
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "error": "Invalid openid format."
+        }
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "error": "Permission Denied."
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "code": 404,
+            "error": "User not found."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "error": "Internal server error."
+        }
+
+## User Relations [/records/user/{host_id}/{guest_id}]
+
+### Gets between users [GET]
+
+This will show all related records between two specific individuals.
+Note that if `g_id` is negative, then means non-group expenses.
+
++ Parameters
+    + host_id (string, required) - The person who is viewing the relation.
+    + guest_id (string, required) - The person who has finacial relation to the viewer.
+
++ Response 200 (application/json)
+
+        {
+            "host_id": "12345a",
+            "guest_id": "45324b",
+            "records": [
+                {
+                    "id": 3241,
+                    "g_id": 582,
+                    "date": "2018-7-4",
+                    "transaction": 40,
+                    "description": "Go out for lunch."
+                },
+                {
+                    "id": 3242,
+                    "g_id": 582,
+                    "date": "2018-7-4",
+                    "transaction": -30,
+                    "description": "Go out for dinner."
+                },
+                {
+                    "id": 3243,
+                    "g_id": -1,
+                    "date": "2018-7-4",
+                    "transaction": -10,
+                    "description": "Settle up."
+                }
+            ]
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "error": "Invalid openid format."
+        }
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "error": "Permission Denied."
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "code": 404,
+            "error": "User not found."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "error": "Internal server error."
+        }
+        
+## Group Profile [/profile/group/{host_id}]
+
+### Gets group expenses [GET]
+
+Here is to query all the groups that are related to a specific user. Only group names
+and corresponding expenses will be displayed.
+
++ Parameters
+    + host_id (string, required) - The openid of the user.
+    
++ Response 200 (application/json)
+
+        {
+            "user": "45324b",
+            "related_groups": [
+                {
+                    "g_id": 582,
+                    "g_name": "292 Pasir Panjang",
+                    "amount": 2490
+                },
+                {
+                    "g_id": 293,
+                    "g_name": "Dover",
+                    "amount": -324
+                }
+            ]
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "error": "Invalid group id format."
+        }
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "error": "Permission Denied."
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "code": 404,
+            "error": "Group not found."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "error": "Internal server error."
+        }
+
+## Group Relations [/records/group/{host_id}/{group_id}]
+
+### Gets inside groups [GET]
+
+Gets specific user-group relation. Display data about how money is spent for a user
+inside a speicific group.
+
++ Parameters
+    + host_id (string, required) - The openid of the user
+    + group_id (number, required) - The id of the group
+    
++ Response 200 (application/json)
+
+        {
+            "user": "45324b",
+            "group": 582,
+            "group_name": "292 Pasir Panjang",
+            "members": [
+                {
+                    "w_id": "12345a"
+                },
+                {
+                    "w_id": "45324b"
+                }
+            ],
+            "records": [
+                 {
+                    "id": 3243,
+                    "date": "2018-7-4",
+                    "amount": 69,
+                    "payer": "45324b",
+                    "spliters": [
+                        {
+                            "w_id": "12345a"
+                        },
+                        {
+                            "w_id": "45324b"
+                        }
+                    ],
+                    "description": "Dinner"
+                },
+                {
+                    "id": 3249,
+                    "date": "2018-7-5",
+                    "amount": 34,
+                    "player": "12345a",
+                    "spliters": [
+                        {
+                            "w_id": "45324b"
+                        }
+                    ],
+                    "description": "Settle up."
+                }
+            ]
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "error": "Invalid id format."
+        }
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "error": "Permission Denied."
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "code": 404,
+            "error": "Group / User not found."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "error": "Internal server error."
+        }
+
+## Group Summary [/summary/group/{host_id}/{group_id}]
+
+### Gets between group members [GET]
+
+Displays data that is inside a specific group, show summary of who owes who / who lends who
+how much.
+
++ Parameters
+    + host_id (string, required) - The openid of the user
+    + group_id (number, required) - The id of the group
+    
++ Response 200 (application/json)
+
+        {
+            "user": "45324b",
+            "group": 582,
+            "related_people": [
+                {
+                    "w_id": "12345a",
+                    "amount": 3423
+                }
+            ]
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "error": "Invalid id format."
+        }
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "error": "Permission Denied."
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "code": 404,
+            "error": "Group / User not found."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "error": "Internal server error."
+        }
+        
+## Settle up data [/settle/relations/{host_id}]
+
+### Gets user related users & groups [GET]
+
+This is used when trying to create a record. We need to get all related users and
+groups for money split. Note: here we always add ther person him/herself in because
+he/she might also be one of the spliters.
+
++ Parameters
+    + host_id (string, required) - The openid of the user
+    
++ Response 200 (application/json)
+
+        {
+            "user": "45324b",
+            "friends": [
+                {
+                    "w_id": "12345a"
+                },
+                {
+                    "w_id": "45324b"
+                }
+            ],
+            "groups": [
+                {
+                    "group_id": 582,
+                    "group_name": "292 Pasir Panjang",
+                    "members": [
+                        {
+                            "w_id": "12345a"
+                        },
+                        {
+                            "w_id": "45324b"
+                        }
+                    ]
+                },
+                {
+                    "group_id": 293,
+                    "group_name": "Dover",
+                    "members": [
+                        {
+                            "w_id": "31451k"
+                        },
+                        {
+                            "w_id": "45324b"
+                        }
+                    ]
+                }
+            ]
+        }
