@@ -6,9 +6,9 @@ HOST: http://wechat-wechat-miniprogram.com/
 This is a simple API endpoint for a wechat miniprogram named wechat-miniprogram. 
 It supports basic queries for accounting.
 
-## User Profile [/summary/user/{host_id}]
+## Users Summary [/summary/users/{host_id}]
 
-### Gets one user [GET]
+### Gets from one user [GET]
 
 This will list down all finacially related users to a specific user
 and will show the amount of money owe/lent.
@@ -59,8 +59,116 @@ and will show the amount of money owe/lent.
             "code": 500,
             "error": "Internal server error."
         }
+        
+## Group Summary [/summary/group/{host_id}/{group_id}]
 
-## User Relations [/records/user/{host_id}/{guest_id}]
+### Gets between group members [GET]
+
+Displays data that is inside a specific group, show summary of who owes who / who lends who
+how much.
+
++ Parameters
+    + host_id (string, required) - The openid of the user
+    + group_id (number, required) - The id of the group
+    
++ Response 200 (application/json)
+
+        {
+            "user": "45324b",
+            "group": 582,
+            "related_people": [
+                {
+                    "w_id": "12345a",
+                    "amount": 3423
+                }
+            ]
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "error": "Invalid id format."
+        }
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "error": "Permission Denied."
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "code": 404,
+            "error": "Group / User not found."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "error": "Internal server error."
+        }
+        
+## Groups Summary [/summary/groups/{host_id}]
+
+### Gets group expenses [GET]
+
+Here is to query all the groups that are related to a specific user. Only group names
+and corresponding expenses will be displayed.
+
++ Parameters
+    + host_id (string, required) - The openid of the user.
+    
++ Response 200 (application/json)
+
+        {
+            "user": "45324b",
+            "related_groups": [
+                {
+                    "g_id": 582,
+                    "g_name": "292 Pasir Panjang",
+                    "amount": 2490
+                },
+                {
+                    "g_id": 293,
+                    "g_name": "Dover",
+                    "amount": -324
+                }
+            ]
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "error": "Invalid group id format."
+        }
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "error": "Permission Denied."
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "code": 404,
+            "error": "Group not found."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "error": "Internal server error."
+        }
+        
+## Records between users [/records/user/{host_id}/{guest_id}]
 
 ### Gets between users [GET]
 
@@ -128,64 +236,8 @@ Note that if `g_id` is negative, then means non-group expenses.
             "code": 500,
             "error": "Internal server error."
         }
-        
-## Group Profile [/profile/group/{host_id}]
 
-### Gets group expenses [GET]
-
-Here is to query all the groups that are related to a specific user. Only group names
-and corresponding expenses will be displayed.
-
-+ Parameters
-    + host_id (string, required) - The openid of the user.
-    
-+ Response 200 (application/json)
-
-        {
-            "user": "45324b",
-            "related_groups": [
-                {
-                    "g_id": 582,
-                    "g_name": "292 Pasir Panjang",
-                    "amount": 2490
-                },
-                {
-                    "g_id": 293,
-                    "g_name": "Dover",
-                    "amount": -324
-                }
-            ]
-        }
-
-+ Response 400 (application/json)
-
-        {
-            "code": 400,
-            "error": "Invalid group id format."
-        }
-
-+ Response 401 (application/json)
-
-        {
-            "code": 401,
-            "error": "Permission Denied."
-        }
-        
-+ Response 404 (application/json)
-
-        {
-            "code": 404,
-            "error": "Group not found."
-        }
-
-+ Response 500 (application/json)
-
-        {
-            "code": 500,
-            "error": "Internal server error."
-        }
-
-## Group Relations [/records/group/{host_id}/{group_id}]
+## Records inside groups [/records/group/{host_id}/{group_id}]
 
 ### Gets inside groups [GET]
 
@@ -201,15 +253,6 @@ inside a speicific group.
         {
             "user": "45324b",
             "group": 582,
-            "group_name": "292 Pasir Panjang",
-            "members": [
-                {
-                    "w_id": "12345a"
-                },
-                {
-                    "w_id": "45324b"
-                }
-            ],
             "records": [
                  {
                     "id": 3243,
@@ -218,7 +261,7 @@ inside a speicific group.
                     "payer": "45324b",
                     "spliters": [
                         {
-                            "w_id": "12345a"
+                            "w_id": "12345a",
                         },
                         {
                             "w_id": "45324b"
@@ -268,27 +311,47 @@ inside a speicific group.
             "code": 500,
             "error": "Internal server error."
         }
+        
+## User Info [/info/user/{host_id}]
 
-## Group Summary [/summary/group/{host_id}/{group_id}]
+### Gets infomation about one user [GET]
 
-### Gets between group members [GET]
-
-Displays data that is inside a specific group, show summary of who owes who / who lends who
-how much.
+This will get all infomation about a specific user.
+Note that this require callers to specify the info fields that are needed.
+By default it only returns avatar, nickname and id of the user.
 
 + Parameters
     + host_id (string, required) - The openid of the user
-    + group_id (number, required) - The id of the group
-    
+
++ Request (application/json)
+    + Body
+
+            {
+                "info_fields": ["friends, avatar, groups, nickname"]
+            }
+
 + Response 200 (application/json)
 
         {
             "user": "45324b",
-            "group": 582,
-            "related_people": [
+            "avatar": "http://photo-url.com",
+            "nickname": "test0",
+            "friends": [
                 {
                     "w_id": "12345a",
-                    "amount": 3423
+                    "avatar": "http://photo-url.com",
+                    "nickname": "test1"
+                },
+                {
+                    "w_id": "45324b",
+                    "avatar": "http://photo-url.com",
+                    "nickname": "test2"
+                }
+            ],
+            "groups": [
+                {
+                    "group_id": "582",
+                    "group_name": "292 pasir panjang road"
                 }
             ]
         }
@@ -321,53 +384,67 @@ how much.
             "error": "Internal server error."
         }
         
-## Settle up data [/settle/relations/{host_id}]
+## Group Info [/info/group/{group_id}]
 
-### Gets user related users & groups [GET]
+### Gets infomation about one group [GET]
 
-This is used when trying to create a record. We need to get all related users and
-groups for money split. Note: here we always add ther person him/herself in because
-he/she might also be one of the spliters.
+This will get all infomation about a specific group.
+Note that this require callers to specify the info fields that are needed.
+By default it only returns group name and member (for now)
 
 + Parameters
-    + host_id (string, required) - The openid of the user
-    
+    + group_id (string, required) - The id of the group
+
++ Request (application/json)
+    + Body
+
+            {
+                "info_fields": ["name, members"]
+            }
+
 + Response 200 (application/json)
 
         {
-            "user": "45324b",
-            "friends": [
+            "group": "582",
+            "name": "292 pasir panjang road",
+            "members": [
                 {
-                    "w_id": "12345a"
+                    "w_id": "12345a",
+                    "avatar": "http://photo-url.com",
+                    "nickname": "test1"
                 },
                 {
-                    "w_id": "45324b"
-                }
-            ],
-            "groups": [
-                {
-                    "group_id": 582,
-                    "group_name": "292 Pasir Panjang",
-                    "members": [
-                        {
-                            "w_id": "12345a"
-                        },
-                        {
-                            "w_id": "45324b"
-                        }
-                    ]
-                },
-                {
-                    "group_id": 293,
-                    "group_name": "Dover",
-                    "members": [
-                        {
-                            "w_id": "31451k"
-                        },
-                        {
-                            "w_id": "45324b"
-                        }
-                    ]
+                    "w_id": "45324b",
+                    "avatar": "http://photo-url.com",
+                    "nickname": "test2"
                 }
             ]
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "error": "Invalid id format."
+        }
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "error": "Permission Denied."
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "code": 404,
+            "error": "Group / User not found."
+        }
+
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "error": "Internal server error."
         }
