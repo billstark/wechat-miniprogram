@@ -89,7 +89,8 @@ func (d *PsqlDB) SelectOne(out interface{}, sql string, args ...interface{}) err
 
 // SelectMany selects several items. result in "out" (casted)
 func (d *PsqlDB) SelectMany(out interface{}, sql string, args ...interface{}) error {
-	return d.connection.Select(out, sql, args...)
+	err := d.connection.Select(out, sql, args...)
+	return err
 }
 
 // SelectIn executes "SELECT <x> WHERE <y> in (...)", result in "out" (casted)

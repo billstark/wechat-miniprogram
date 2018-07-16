@@ -29,7 +29,7 @@ CREATE TABLE Record (
   pay_amount  float NOT NULL,
   description text NOT NULL,
   updated_at  timestamp,
-  deleted_at  timestamp,
+  deleted     boolean DEFAULT false,
   FOREIGN KEY (g_id) REFERENCES MGroup(id) ON DELETE CASCADE,
   FOREIGN KEY (payer) REFERENCES MUser(w_id) ON DELETE CASCADE,
   PRIMARY KEY (id, g_id)

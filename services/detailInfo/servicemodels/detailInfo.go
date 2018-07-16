@@ -19,11 +19,11 @@ type DetailBetweenUsers struct {
 // UserRecord wraps the record used for detail info
 // between users
 type UserRecord struct {
-	RecordID    int
-	GroupID     int
-	Date        time.Time
-	Amount      float32
-	Description string
+	RecordID    int       `json:"id"`
+	GroupID     int       `json:"group_id"`
+	Date        time.Time `json:"date"`
+	Amount      float32   `json:"amount"`
+	Description string    `json:"description"`
 }
 
 // GroupDetails wraps the detail info result for a group
