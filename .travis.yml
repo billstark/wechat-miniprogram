@@ -6,6 +6,8 @@ go:
 git:
   depth: 1
 
+go_import_path: wechat-miniprogram
+
 install: true
 
 notifications:
