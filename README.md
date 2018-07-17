@@ -1,4 +1,6 @@
-# About
+[![Build Status](https://travis-ci.com/billstark/wechat-miniprogram.svg?token=xrhkoH61BMXYN5N5UqHm&branch=master)](https://travis-ci.com/billstark/wechat-miniprogram)
+
+# About 
 
 ### Structure
 Basically this application can be divided into three parts: __main application__, __services__ and __data stores__.
