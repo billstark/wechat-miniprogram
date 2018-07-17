@@ -17,8 +17,8 @@ notifications:
   email: false
 
 before_script:
-  - psql -c 'CREATE DATABASE mediocirs_test;' -U postgres
-  - mkdir config && cp deploy/database.travis.yml config/database.yml
+  - psql -c 'CREATE DATABASE mediocirs;' -U postgres
+  - cp deploy/database.travis.yml config/database.yml
 
 script:
   - go test ./...
