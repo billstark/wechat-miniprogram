@@ -9,7 +9,8 @@ import (
 )
 
 func TestGetNoDetailInfo(t *testing.T) {
-	clearTables()
+	testutils.DropAllTables(app.DB)
+	testutils.CreateTables(app.DB)
 	req, _ := http.NewRequest("GET", "/records/user/12345u/23456u", nil)
 	response := testutils.ExecuteRequest(req, app)
 	testutils.CheckResponseCode(t, http.StatusOK, response.Code)
@@ -31,10 +32,11 @@ func TestGetNoDetailInfo(t *testing.T) {
 }
 
 func TestGetDetailedInfo(t *testing.T) {
-	clearTables()
-	insertUsers()
-	insertGroups()
-	insertRecords()
+	testutils.DropAllTables(app.DB)
+	testutils.CreateTables(app.DB)
+	testutils.InsertUsers(app.DB)
+	testutils.InsertGroups(app.DB)
+	testutils.InsertRecords(app.DB)
 	req, _ := http.NewRequest("GET", "/records/user/12345u/23456u", nil)
 	response := testutils.ExecuteRequest(req, app)
 	testutils.CheckResponseCode(t, http.StatusOK, response.Code)
@@ -79,29 +81,4 @@ func TestGetDetailedInfo(t *testing.T) {
 		recordTwo["description"].(string) != "settle" {
 		t.Errorf("Expect record to be id: 3, group_id: 1, date: 2016-07-14T00:00:00Z, amount: -30, description: settle, got %d, %d, %s, %f, %s", int(recordTwo["id"].(float64)), int(recordTwo["group_id"].(float64)), recordTwo["date"].(string), recordTwo["amount"].(float64), recordTwo["description"].(string))
 	}
-}
-
-func clearTables() {
-	app.DB.Exec(testutils.RecordTableClear)
-	app.DB.Exec(testutils.UserTableClear)
-	app.DB.Exec(testutils.GroupTableClear)
-	app.DB.Exec(testutils.ResetUserSeq)
-	app.DB.Exec(testutils.ResetGroupSeq)
-	app.DB.Exec(testutils.ResetRecordSeq)
-}
-
-func insertUsers() {
-	app.DB.Exec(testutils.InsertUserA)
-	app.DB.Exec(testutils.InsertUserB)
-	app.DB.Exec(testutils.InsertUserC)
-}
-
-func insertGroups() {
-	app.DB.Exec(testutils.InsertGroupA)
-}
-
-func insertRecords() {
-	app.DB.Exec(testutils.InsertRecordOne)
-	app.DB.Exec(testutils.InsertRecordTwo)
-	app.DB.Exec(testutils.InsertRecordThree)
 }

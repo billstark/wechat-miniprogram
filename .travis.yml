@@ -10,11 +10,15 @@ go_import_path: wechat-miniprogram
 
 install: true
 
+services:
+  - postgresql
+
 notifications:
   email: false
 
 before_script:
-  - go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint
+  - psql -c 'CREATE DATABASE mediocirs_test;' -U postgres
+  - mkdir config && cp deploy/database.travis.yml config/database.yml
 
 script:
   - go test ./...

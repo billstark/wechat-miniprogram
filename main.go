@@ -12,13 +12,13 @@ import (
 func main() {
 	app := application.App{}
 
-	serverConfig, err := server.ReadConfig("./serverConfig.json")
+	serverConfig, err := server.ReadConfig("./config/serverConfig.json")
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 
-	dbConfig, err := database.ReadConfig("./dbConfig.json")
+	dbConfig, err := database.ReadConfig("./config/dbConfig.json")
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
