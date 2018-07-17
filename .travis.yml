@@ -14,7 +14,8 @@ services:
   - postgresql
 
 notifications:
-  email: false
+  email:
+    - billstark1996@gmail.com
 
 before_script:
   - ./setup
