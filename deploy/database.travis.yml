@@ -2,4 +2,4 @@ postgressql: &postgressql
 adapter: postgresql
 username: postgres
 password: password
-database: mediocirs_test
+database: mediocirs
