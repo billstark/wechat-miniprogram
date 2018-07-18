@@ -21,16 +21,18 @@ before_script:
   - ./setup
   - psql -c 'CREATE DATABASE mediocirs;' -U postgres
   - cp deploy/database.travis.yml config/database.yml
+  - tag=${TRAVIS_COMMIT:0:7}
 
 script:
   - go test ./...
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker build -t wechat-miniprogram .
+  - docker tag wechat-miniprogram "wechat-miniprogram:${tag}"
+  - docker push "wechat-miniprogram:${tag}"
 
 jobs:
   include:
     - stage: build docker image
       script:
         - echo $TRAVIS_COMMIT
-        - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-        - docker build -t wechat-miniprogram .
-        - docker tag wechat-miniprogram "wechat-miniprogram:${TRAVIS_COMMIT:0:7}"
-        - docker push "wechat-miniprogram:${TRAVIS_COMMIT:0:7}"
+        
