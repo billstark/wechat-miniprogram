@@ -24,3 +24,12 @@ before_script:
 
 script:
   - go test ./...
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+        - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+        - docker build -t wechat-miniprogram:${TRAVIS_COMMIT:0:7} .
+        - docker tag wechat-miniprogram:${TRAVIS_COMMIT:0:7} $DOCKER_USERNAME/wechat-miniprogram
+        - docker push $DOCKER_USERNAME/wechat-miniprogram
