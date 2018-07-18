@@ -29,10 +29,4 @@ script:
   - docker build -t wechat-miniprogram .
   - docker tag wechat-miniprogram "wechat-miniprogram:${tag}"
   - docker push "wechat-miniprogram:${tag}"
-
-jobs:
-  include:
-    - stage: build docker image
-      script:
-        - echo $TRAVIS_COMMIT
         
