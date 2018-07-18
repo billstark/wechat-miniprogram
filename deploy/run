@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Exit on failures.
+set -e
+
+# Enable verbosity for easier debugging.
+set -x
+
+set -o pipefail
+
+echo "Start setting up production config..."
+
+SRC_DIR=/go/src/wechat-miniprogram
+APP_DIR=/opt/wechat-miniprogram
+
+mkdir $APP_DIR/config
+
+if [ -e $APP_DIR/secret.json ]
+then
+  echo "secret found. start running"
+  json-template -s $APP_DIR/secret.json -f $SRC_DIR/utils/shell/templatefiller/fillin.jq \
+                -i $SRC_DIR/deploy/dbConfig.template.json -o $APP_DIR/config/dbConfig.json
+  json-template -s $APP_DIR/secret.json -f $SRC_DIR/utils/shell/templatefiller/fillin.jq \
+                -i $SRC_DIR/deploy/serverConfig.template.json -o $APP_DIR/config/serverConfig.json
+  rm $APP_DIR/secret.json
+
+  echo "finish setting up config files"
+
+  echo "setting up supervisor"
+  
+  cp $SRC_DIR/deploy/supervisord.conf /etc/supervisor/conf.d/wechat-miniprogram.conf
+  echo "alias status='supervisorctl status'" >> ~/.bashrc
+  echo "alias start='supervisorctl start wechat-miniprogram'" >> ~/.bashrc
+  echo "alias restart='supervisorctl restart wechat-miniprogram'" >> ~/.bashrc
+  echo "alias stop='supervisorctl stop wechat-miniprogram'" >> ~/.bashrc
+
+  echo "Starting..."
+  /usr/bin/supervisord -n
+else
+  echo "secret file does not exist"
+  exit 1
+fi

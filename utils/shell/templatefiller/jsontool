@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# This is a simple tool for changing value of json files.
+# A typical usage for this tool is pre-defining some template file and then
+# substitute secret values to create real config files
+
+# To use this tool:
+# - source jsontool in your script
+# - call json-template function.
+#   Note: function usage: json-template -s <secrets-directory> -i <input-file-directory> -o <output-file-directory>
+#   Currently this function only support substituting one value at a time
+
+# Example:
+# template.json:
+# {
+#   "server": {
+#     "host": "<host>",
+#     "port": "<port>"
+#   }
+# }
+
+# template.json:
+# {
+#   "<host>": "192.168.0.1",
+#   "<port>": 8080,
+#   ...
+# }
+
+# json-template -s secrets.json -i template.json -o serverConfig.json
+
+initialize() {
+
+  # Checks whether jq package is installed
+  dpkg-query -l jq
+
+  installed=$?
+
+  # If not installed
+  if [ $installed == 1 ]
+  then
+
+    # Install jq
+    echo "jq library not installed, installing..."
+    apt-get update && apt-get install -y jq
+  fi
+
+}
+
+usage() {
+  echo "Usage: json-template -s <secret-file-directory> -f <fillin-script> -i <input-directory> -o <output-directory>"
+}
+
+json-template() {
+  initialize
+  OPTIND=1
+  while getopts "s:f:i:o:" o; do
+    case "${o}" in
+      s)
+        secretDir=${OPTARG}
+        ;;
+      f)
+        fillinDir=${OPTARG}
+        ;;
+      i)
+        inputDir=${OPTARG}
+        ;;
+      o)
+        outputDir=${OPTARG}
+        ;;
+      *)
+        usage
+        ;;
+    esac
+  done
+
+  if [ -z ${secretDir+x} ] || [ -z ${fillinDir+x} ] || [ -z ${inputDir+x} ] || [ -z ${outputDir+x} ]
+  then
+    usage
+    exit 1
+  fi
+
+  jq -c --argfile dict $secretDir -f $fillinDir $inputDir > tmp.$$.json && mv tmp.$$.json $outputDir
+}
