@@ -24,7 +24,6 @@ then
                 -i $SRC_DIR/deploy/dbConfig.template.json -o $APP_DIR/config/dbConfig.json
   json-template -s $APP_DIR/secret.json -f $SRC_DIR/utils/shell/templatefiller/fillin.jq \
                 -i $SRC_DIR/deploy/serverConfig.template.json -o $APP_DIR/config/serverConfig.json
-  rm $APP_DIR/secret.json
 
   echo "finish setting up config files"
 

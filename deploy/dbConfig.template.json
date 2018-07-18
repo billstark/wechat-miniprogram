@@ -4,7 +4,8 @@
   "port": "<db_port>",
   "username": "<db_username>",
   "password": "<db_password>",
-  "databaseName": "<db_name>",
-  "maxOpenConnections": "<max_open_connections>",
-  "maxIdleConnections": "<max_idle_connections>"
+  "db_name": "<db_name>",
+  "max_open_connections": "<max_open_connections>",
+  "max_idle_connections": "<max_idle_connections>",
+  "enable_ssl": "<enable_ssl>" 
 }

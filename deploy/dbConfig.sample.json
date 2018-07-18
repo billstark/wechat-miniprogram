@@ -6,5 +6,6 @@
   "password": "password",
   "db_name": "mediocirs",
   "max_idle_connections": 5,
-  "max_open_connections": 5
+  "max_open_connections": 5,
+  "enable_ssl": false
 }
