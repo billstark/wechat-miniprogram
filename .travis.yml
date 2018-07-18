@@ -22,7 +22,6 @@ before_script:
   - psql -c 'CREATE DATABASE mediocirs;' -U postgres
   - cp deploy/database.travis.yml config/database.yml
   - tag=${TRAVIS_COMMIT:0:7}
-  - echo something:$tag
 
 script:
   - go test ./...
