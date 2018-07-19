@@ -15,7 +15,7 @@ jobs:
     steps:
       - checkout
       - run: ./setup
-      - run: psql -c "CREATE DATABASE mediocirs;"" -U postgres
+      - run: psql -c "CREATE DATABASE mediocirs;" -U postgres
       - run: psql -c "CREATE ROLE test WITH LOGIN PASSWORD 'test'" -U postgres
       - run: tag=${CIRCLE_TAG:0:7}
       - run: go test ./...
