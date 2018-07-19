@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Exit on failures.
+set -e
+
+# Enable verbosity for easier debugging.
+set -x
+
+set -o pipefail
+
+ssh ops@ec2-54-169-153-116.ap-southeast-1.compute.amazonaws.com
+
+cd
