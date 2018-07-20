@@ -19,6 +19,8 @@ source $SRC_DIR/utils/shell/templatefiller/jsontool
 
 if [ -e $APP_DIR/secret.json ]
 then
+
+  # app configs
   echo "secret found. start running"
   json-template -s $APP_DIR/secret.json -f $SRC_DIR/utils/shell/templatefiller/fillin.jq \
                 -i $SRC_DIR/deploy/dbConfig.template.json -o $APP_DIR/config/dbConfig.json
@@ -27,6 +29,25 @@ then
 
   echo "finish setting up config files"
 
+  # nginx configs
+  SECRET_STR=`cat $APP_DIR/secret.json`
+  SERVER_HOST="$(jq '."<server_host>"' <<<"$SECRET_STR" | tr -d '"')"
+  SERVER_PORT="$(jq '."<server_port>"' <<<"$SECRET_STR" | tr -d '"')"
+
+  NGINX_CONFIG=`cat $SRC_DIR/deploy/wechatMiniprogram.template.nginx`
+  NGINX_CONFIG=$NGINX_CONFIG | sed -e "s/\$SERVER_HOST/${SERVER_HOST}/g"
+  NGINX_CONFIG=$NGINX_CONFIG | sed -e "s/\$SERVER_PORT/${SERVER_PORT}/g"
+
+  echo $NGINX_CONFIG >> /etc/nginx/sites-available/wechatMiniprogram.nginx
+
+  cp $SRC_DIR/deploy/nginx.conf /etc/nginx/nginx.conf
+  ln -sf /etc/nginx/sites-available/wechatMiniprogram.nginx /etc/nginx/sites-enabled/wechatMiniprogram.nginx
+  rm -f /etc/nginx/sites-enabled/default
+
+  # logrotate for nginx.
+  cp "$SRC_DIR/deploy/logrotate.nginx" /etc/logrotate.d
+
+  # supervisor configs
   echo "setting up supervisor"
   
   cp $SRC_DIR/deploy/supervisord.conf /etc/supervisor/conf.d/wechat-miniprogram.conf
