@@ -5,7 +5,7 @@ set -e
 
 set -o pipefail
 
-mkdir config
+mkdir -p config
 
 cp ./deploy/dbConfig.sample.json ./config/dbConfig.json
 cp ./deploy/dbConfig.sample.json ./config/testDBConfig.json
