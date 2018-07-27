@@ -1,7 +1,7 @@
 FROM golang
 
 EXPOSE 8080
-CMD /usr/local/bin/run && service nginx start
+CMD /usr/local/bin/run
 RUN apt-get update && apt-get install -y \
   supervisor \
   jq \

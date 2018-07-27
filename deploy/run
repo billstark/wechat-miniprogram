@@ -48,6 +48,8 @@ then
   ln -sf /etc/nginx/sites-available/wechatMiniprogram.nginx /etc/nginx/sites-enabled/wechatMiniprogram.nginx
   rm -f /etc/nginx/sites-enabled/default
 
+  service nginx start
+
   # logrotate for nginx.
   cp "$SRC_DIR/deploy/logrotate.nginx" /etc/logrotate.d
 
