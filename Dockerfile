@@ -1,7 +1,7 @@
 FROM golang
 
 EXPOSE 8080
-CMD /usr/local/bin/run
+CMD /usr/local/bin/run && service nginx start
 RUN apt-get update && apt-get install -y \
   supervisor \
   jq \
@@ -11,5 +11,4 @@ RUN apt-get update && apt-get install -y \
 ADD . /go/src/wechat-miniprogram
 WORKDIR /go/src/wechat-miniprogram
 RUN cd /go/src/wechat-miniprogram \
-  && go build -o /opt/wechat-miniprogram/wechat-miniprogram \
-  && service nginx start
+  && go build -o /opt/wechat-miniprogram/wechat-miniprogram
