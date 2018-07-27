@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/billstark/wechat-miniprogram.svg?token=xrhkoH61BMXYN5N5UqHm&branch=master)](https://travis-ci.com/billstark/wechat-miniprogram)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # About 
 
