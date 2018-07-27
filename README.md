@@ -63,6 +63,16 @@ $ go test ./...
 ```
 under root directory to test your code.
 
+### Deployment
+This is project specified. My method of deploying it to build a docker image and publish it to docker hub. Then
+I keep the app-related secrets inside the server that I want to deploy on (not good practice but for now I just do
+this. Better ideas would be using Vault or Consul). Then I wrote a script called `deploy_mediocirs` to deploy the app.
+When you want to deploy, please specifiy your server ip, the tag (first 6 digits of the commit tag, used as docker tag)
+and the port that you want to deploy on. For instance:
+```
+$ ./deploy_mediocirs -s myserver.com -t c55eb67 -p 8080
+```
+
 ### Code formatting
 In order to have better coding experience, please follow the following coding format rules (will be adding along the way).
 
