@@ -13,7 +13,7 @@ echo "Start setting up production config..."
 SRC_DIR=/go/src/wechat-miniprogram
 APP_DIR=/opt/wechat-miniprogram
 
-mkdir $APP_DIR/config
+mkdir -p $APP_DIR/config
 
 source $SRC_DIR/utils/shell/templatefiller/jsontool
 
@@ -33,10 +33,14 @@ then
   SECRET_STR=`cat $APP_DIR/secret.json`
   SERVER_HOST="$(jq '."<server_host>"' <<<"$SECRET_STR" | tr -d '"')"
   SERVER_PORT="$(jq '."<server_port>"' <<<"$SECRET_STR" | tr -d '"')"
+  HOST_IP="$(jq '."<host_ip>"' <<<"$SECRET_STR" | tr -d '"')"
+  HOST_PORT="$(jq '."<host_port>"' <<<"$SECRET_STR" | tr -d '"')"
 
   NGINX_CONFIG=`cat $SRC_DIR/deploy/wechatMiniprogram.template.nginx`
-  NGINX_CONFIG=$NGINX_CONFIG | sed -e "s/\$SERVER_HOST/${SERVER_HOST}/g"
-  NGINX_CONFIG=$NGINX_CONFIG | sed -e "s/\$SERVER_PORT/${SERVER_PORT}/g"
+  NGINX_CONFIG="$(echo $NGINX_CONFIG | sed -e "s/\$SERVER_HOST/${SERVER_HOST}/g")"
+  NGINX_CONFIG="$(echo $NGINX_CONFIG | sed -e "s/\$SERVER_PORT/${SERVER_PORT}/g")"
+  NGINX_CONFIG="$(echo $NGINX_CONFIG | sed -e "s/\$HOST_IP/${HOST_IP}/g")"
+  NGINX_CONFIG="$(echo $NGINX_CONFIG | sed -e "s/\$HOST_PORT/${HOST_PORT}/g")"
 
   echo $NGINX_CONFIG >> /etc/nginx/sites-available/wechatMiniprogram.nginx
 

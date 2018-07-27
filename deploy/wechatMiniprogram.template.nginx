@@ -1,6 +1,6 @@
 server {
-  listen 80;
-  server_name _;
+  listen $HOST_PORT;
+  server_name $HOST_IP;
   access_log /var/log/nginx/wechat_miniprogram_access.log logstash_json buffer=32K;
 
   location / {
