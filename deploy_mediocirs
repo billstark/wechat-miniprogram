@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Exit on failures.
+set -e
+
+# Enable verbosity for easier debugging.
+# set -x
+
+set -o pipefail
+
+PROJECT_NAME="mediocirs"
+DOCKER_PROJECT="zhuohan/wechat-miniprogram"
+APP_SECRET_DIR="/opt/wechat-miniprogram"
+
+while getopts "s:t:p:" o; do
+  case "${o}" in
+    s)
+      server=${OPTARG}
+      ;;
+    t)
+      dockerTag=${OPTARG}
+      ;;
+    p)
+      portNumber=${OPTARG}
+      ;;
+    *)
+      usage
+      ;;
+  esac
+done
+
+if [[ -z "$server" || -z "$dockerTag" || -z "$portNumber" ]]; then
+  echo "usage: deploy_mediocirs -s <server-ip> -t <docker-tag> -p <port-number>"
+  exit 1
+fi
+
+ssh -t ops@$server "sudo ./deploy -n $PROJECT_NAME -s $APP_SECRET_DIR -d $DOCKER_PROJECT -t $dockerTag -p $portNumber"
