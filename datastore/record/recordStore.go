@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	nonGroupID           = -1
+	nonGroupID           = 1
 	nonUserID            = ""
 	sqlSelectRecord      = `SELECT * FROM record`
 	sqlWhereUserRelated  = ` WHERE payer = $1 OR $1=ANY(spliters)`
