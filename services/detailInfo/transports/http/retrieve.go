@@ -32,10 +32,10 @@ func DecodeRetrieveRequest(_ context.Context, req *http.Request) (interface{}, e
 		return nil, serviceErr.ErrInsufficientParams
 	}
 
-	// deal with group id. if no group id provided, sub with -1
+	// deal with group id. if no group id provided, sub with 1
 	var groupID int
 	if groupIDStr == emptyID {
-		groupID = -1
+		groupID = 1
 	} else {
 		groupID, _ = strconv.Atoi(groupIDStr)
 	}
