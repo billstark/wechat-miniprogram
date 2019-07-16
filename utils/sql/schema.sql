@@ -2,6 +2,7 @@ CREATE DATABASE mediocirs;
 
 CREATE TABLE MUser (
   id        SERIAL,
+  w_name    varchar(255) NOT NULL,
   w_id      varchar(255) PRIMARY KEY
 );
 
