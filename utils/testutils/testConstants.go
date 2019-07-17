@@ -3,15 +3,17 @@ package testutils
 const (
 	// CreateUserTable creates user table
 	CreateUserTable = `CREATE TABLE MUser (
-		id        SERIAL,
-		w_name	  varchar(255) NOT NULL,
-		w_id      varchar(255) PRIMARY KEY
+		id         SERIAL,
+		w_name	   varchar(255) NOT NULL,
+		w_id       varchar(255) PRIMARY KEY,
+		created_at timestamp
 	);`
 	// CreateGroupTable creates group table
 	CreateGroupTable = `CREATE TABLE MGroup (
 		id          SERIAL PRIMARY KEY,
 		name        varchar(255) NOT NULL,
-		description text
+		description text,
+		updated_at  timestamp
 	);`
 	// CreateBelongToTable creates belong to table
 	CreateBelongToTable = `CREATE TABLE BelongTo (
@@ -66,13 +68,13 @@ const (
 	// GroupTableClear clears group table
 	GroupTableClear = `DELETE FROM MGroup`
 	// InsertUserA inserts a sample user A
-	InsertUserA = `INSERT INTO MUser (w_name, w_id) VALUES ('test user1', '12345u')`
+	InsertUserA = `INSERT INTO MUser (w_name, w_id, created_at) VALUES ('test user1', '12345u', '2019-07-17T10:23:31+00:00')`
 	// InsertUserB inserts a sample user B
-	InsertUserB = `INSERT INTO MUser (w_name, w_id) VALUES ('test user2', '23456u')`
+	InsertUserB = `INSERT INTO MUser (w_name, w_id, created_at) VALUES ('test user2', '23456u', '2019-07-17T10:23:31+00:00')`
 	// InsertUserC inserts a sample user C
-	InsertUserC = `INSERT INTO MUser (w_name, w_id) VALUES('test user3', '34567u')`
+	InsertUserC = `INSERT INTO MUser (w_name, w_id, created_at) VALUES('test user3', '34567u', '2019-07-17T10:23:31+00:00')`
 	// InsertGroupA inserts a sample group A
-	InsertGroupA = `INSERT INTO MGroup (name, description) VALUES('292 Pasir Panjang Road', 'This is just a test group')`
+	InsertGroupA = `INSERT INTO MGroup (name, description, updated_at) VALUES('292 Pasir Panjang Road', 'This is just a test group', '2019-07-17T10:23:31+00:00')`
 	// InsertRecordOne inserts a sample record
 	InsertRecordOne = `INSERT INTO Record (g_id, day, payer, spliters, pay_amount, description, updated_at) VALUES(1, '2018-07-14', '12345u', '{"12345u", "23456u"}', 100, 'dinner', '2018-07-14 20:38:40')`
 	// InsertRecordTwo inserts a sample record
