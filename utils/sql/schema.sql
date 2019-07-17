@@ -1,15 +1,17 @@
 CREATE DATABASE mediocirs;
 
 CREATE TABLE MUser (
-  id        SERIAL,
-  w_name    varchar(255) NOT NULL,
-  w_id      varchar(255) PRIMARY KEY
+  id         SERIAL,
+  w_name     varchar(255) NOT NULL,
+  w_id       varchar(255) PRIMARY KEY,
+  created_at timestamp
 );
 
 CREATE TABLE MGroup (
   id          SERIAL PRIMARY KEY,
   name        varchar(255) NOT NULL,
-  description text
+  description text,
+  updated_at  timestamp
 );
 
 CREATE TABLE BelongTo (
