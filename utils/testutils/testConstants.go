@@ -65,11 +65,11 @@ const (
 	// GroupTableClear clears group table
 	GroupTableClear = `DELETE FROM MGroup`
 	// InsertUserA inserts a sample user A
-	InsertUserA = `INSERT INTO MUser (w_id) VALUES('12345u')`
+	InsertUserA = `INSERT INTO MUser (w_name, w_id) VALUES ('test user1', '12345u')`
 	// InsertUserB inserts a sample user B
-	InsertUserB = `INSERT INTO MUser (w_id) VALUES('23456u')`
+	InsertUserB = `INSERT INTO MUser (w_name, w_id) VALUES ('test user2', '23456u')`
 	// InsertUserC inserts a sample user C
-	InsertUserC = `INSERT INTO MUser (w_id) VALUES('34567u')`
+	InsertUserC = `INSERT INTO MUser (w_name, w_id) VALUES('test user3', '34567u')`
 	// InsertGroupA inserts a sample group A
 	InsertGroupA = `INSERT INTO MGroup (name, description) VALUES('292 Pasir Panjang Road', 'This is just a test group')`
 	// InsertRecordOne inserts a sample record
