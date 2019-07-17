@@ -4,6 +4,7 @@ const (
 	// CreateUserTable creates user table
 	CreateUserTable = `CREATE TABLE MUser (
 		id        SERIAL,
+		w_name	  varchar(255) NOT NULL,
 		w_id      varchar(255) PRIMARY KEY
 	);`
 	// CreateGroupTable creates group table
