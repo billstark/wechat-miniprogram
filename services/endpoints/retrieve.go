@@ -21,10 +21,10 @@ const (
 	logParamsTag   = "params"
 )
 
-// MakeRetrieveEndpoint makes retrieve endpoint for different types of serviecs
+// MakeRetrieveEndpoint makes retrieve endpoint for different types of services
 func MakeRetrieveEndpoint(logger log.Logger, service services.Service, serviceType string) endpoint.Endpoint {
 
-	// Returns an endpoint (basically, an enpoint is a place to deal with request)
+	// Returns an endpoint (basically, an endpoint is a place to deal with request)
 	// For here we just pass it to services to do it.
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		var err error
